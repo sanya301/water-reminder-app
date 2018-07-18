@@ -67,7 +67,7 @@ function setnextAlarm() {
   chrome.alarms.create({delayInMinutes: minutes});  
 }
 
-chrome.alarms.onAlarm.addListener(function() {
+chrome.alarms.onAlarm.addListener(function(){
   chrome.browserAction.setBadgeText({text: ''});
   chrome.notifications.create({
       type:     'basic',
@@ -78,7 +78,7 @@ chrome.alarms.onAlarm.addListener(function() {
         {title: 'Keep it Flowing.'}
       ],
       priority: 0});
-  setnextAlarm()
+  setnextAlarm();
   playSound(true);
 });
 
@@ -93,6 +93,7 @@ function bginitialize() {
   alert('bginitialize');
   var tod = new Date();
   chrome.storage.sync.set({'today': String(tod.getDate())});
+  chrome.storage.sync.set({'current_water': "0"});  
   chrome.alarms.create({delayInMinutes: 0.1});
 }
 

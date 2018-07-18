@@ -63,7 +63,7 @@ function undo(){
 		var txt = String(old_tot);
 		chrome.storage.sync.set({'current_water': txt});
 	});
-
+}
 
 function clearAlarm() {
   	chrome.browserAction.setBadgeText({text: ''});
@@ -99,6 +99,7 @@ function setnewdaywater(){
     chrome.storage.sync.get('today', function (result) {
 	    var d = result.today;
 	    if((parseFloat(now.getDate())-parseFloat(d))!=0){
+	    	alert('date changing');
 	    	var next_alarm = check_next_alarm();
         	if(next_alarm==null){
         		next_alarm = time(now.getTime() + 2*60*1000);
@@ -107,12 +108,11 @@ function setnewdaywater(){
 	    	chrome.storage.sync.set({'today': String(now.getDate())});
 	    	chrome.storage.sync.set({'last_val': "0"});
 	    	chrome.storage.sync.set({'next_alarm': next_alarm});
-	    	alert('date changed');
 	    }	
 	});
 }
 
-window.onload=setnewdaywater;
+window.onload=setnewdaywater();
 
 updateCurrentTime();
 setInterval(updateCurrentTime, 500);
