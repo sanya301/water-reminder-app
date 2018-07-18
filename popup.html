@@ -1,0 +1,88 @@
+<!doctype html>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+
+<html>
+    <head>
+        <title>Hydrate</title>
+    <style>
+		body {
+			text-align: center;
+	 	}
+
+		#mainPopup {
+			padding: 10px;
+			height: 200px;
+			width: 200px;
+			font-family: Helvetica, Ubuntu, Arial, sans-serif;
+	  	}
+
+	  	#amt_wrap{
+		  	padding: 1px;
+		  	background-color: #80DEEA;
+	  	}
+
+	  	#hydrateImage {
+		    width: 100px;
+		    margin: 5px;
+	  	}
+
+	  	input{
+	  		width: 40px;
+	  	}
+
+	  	button {
+		    margin: 5px;
+		    outline: medium;
+	  	}
+
+	  	button:hover {
+		    outline: #80DEEA dotted;
+		    opacity: 1;
+	  	}
+
+		.btn {
+		    background-color:#80DEEA; 
+		    border: none;
+		    color: black;
+		    font-size: 13px;
+		    cursor: pointer;
+		}
+
+		.btn:hover {
+		    background-color: white;
+		}
+    
+    </style>
+    </head>
+    
+    <body>
+    	<div id = "mainPopup">
+	        <img src='icon.png' id='hydrateImage'>
+	        <div id="amt_wrap">
+		        <h2>
+		        	<label for="current_water">Today's H<sub>2</sub>O </label>
+		        	<div id="current_water">0 mL </div></h2> 
+				<div id="add_wrap" class="water_wrap">
+				<p>
+				    <input id="add_val" type="number" step="10" value="0">
+				    <select id="a1_ampm">
+				    	<option>mL</option>
+				    </select>
+				    <button id="water_add">Add</button>
+				    <button id="undo" class="btn"><i class="fas fa-undo"></i></button>
+				</p>
+				</div>
+			</div>
+			<br>
+			<div id="nxt_wrap">
+			<h3>
+				<label for="timer">Next alarm</label>
+				<div id="timer">00:00</div>
+			</h3>
+			</div>
+	        <button id='cancelAlarm'>Cancel Alarm</button> <br>
+	        <br>
+    	</div>
+    <script src="popup.js"></script>
+    </body>
+</html>
