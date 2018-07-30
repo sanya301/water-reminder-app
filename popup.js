@@ -8,25 +8,27 @@ var HOUR_MS = 1000 * 60 * 60;
 var start_time = 10 * HOUR_MS;
 var end_time = 22 * HOUR_MS;
 
+var GLASS = "250"
+
 function time(ms) {
     return new Date(ms).toISOString().slice(11, -5);
 }
 
 function check_next_alarm(){
 	var now = new Date;
-	var next_alarm = null;
 	chrome.storage.sync.get('next_alarm', function(result) {
-		next_alarm = parseFloat(result.next_alarm.slice(0,2))*HOUR_MS 
-					 + parseFloat(result.next_alarm.slice(2,4))* 60 *1000;
-		alert(next_alarm.slice(0,2));
+		var n_a = result.next_alarm;
+		var alarm = parseFloat(n_a.slice(0,2))*HOUR_MS 
+					 + parseFloat(n_a.slice(3,5))* 60 *1000;
 		var t = now.getHours() * HOUR_MS +
     			now.getMinutes() * 60 * 1000 +
     			now.getSeconds() * 1000;
-		if (next_alarm < t){
-			next_alarm = time(now.getTime() + 60*60*1000);
-		} 
+		if (alarm < t){
+			alert('correcting next_alarm in check_next_alarm');
+			n_a = time(now.getTime() + 60*60*1000);
+			chrome.storage.sync.set({'next_alarm': n_a});
+		}
 	});
-	return next_alarm;
 }
 
 function getWater() {
@@ -41,8 +43,8 @@ function getWater() {
 	}
 }
 
-function updateWater(){
-	var add = document.getElementById('add_val').value;
+function updateWater(value){
+	var add = (value == null)? document.getElementById('add_val').value : value;
 	var cur = document.getElementById('current_water').innerText;
 	var new_tot = parseFloat(cur) + parseFloat(add);
 	var txt = String(new_tot);
@@ -90,7 +92,6 @@ function updateCurrentTime() {
 			left = "00:00:00";
 		}
         document.getElementById('timer').innerText = left;
-
   	});
 }
 
@@ -100,15 +101,11 @@ function setnewdaywater(){
 	    var d = result.today;
 	    if((parseFloat(now.getDate())-parseFloat(d))!=0){
 	    	alert('date changing');
-	    	var next_alarm = check_next_alarm();
-        	if(next_alarm==null){
-        		next_alarm = time(now.getTime() + 2*60*1000);
-        	}
+	    	check_next_alarm();
 	    	chrome.storage.sync.set({'current_water': "0"});
 	    	chrome.storage.sync.set({'today': String(now.getDate())});
 	    	chrome.storage.sync.set({'last_val': "0"});
-	    	chrome.storage.sync.set({'next_alarm': next_alarm});
-	    }	
+	    }
 	});
 }
 
@@ -119,7 +116,7 @@ setInterval(updateCurrentTime, 500);
 getWater();
 setInterval(getWater, 100);
 
-document.getElementById('water_add').addEventListener('click', updateWater);
+document.getElementById('water_add').addEventListener('click', function(){updateWater(null)});
 document.getElementById('undo').addEventListener('click', undo);
-
+document.getElementById('glass').addEventListener('click', function(){updateWater(GLASS)});
 document.getElementById('cancelAlarm').addEventListener('click', clearAlarm);
